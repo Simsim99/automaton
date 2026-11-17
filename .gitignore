@@ -1,0 +1,6 @@
+# Secrets — never committed, ever
+.env
+
+# Local junk
+*.log
+.DS_Store
