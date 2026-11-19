@@ -1,6 +1,11 @@
 # Secrets — never committed, ever
 .env
 
+.venv/
+
 # Local junk
 *.log
 .DS_Store
+__pycache__/
+*.pyc
+.pytest_cache/
