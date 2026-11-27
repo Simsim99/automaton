@@ -2,14 +2,20 @@ import os
 from flask import Flask, jsonify, request
 # jsonify converts Python dicts to a proper JSON response
 from store import NoteStore
+from sqlstore import SqlStore
 
 
-# function that creates a flask object if store is None otherwise build a fresh NoteStore
+# function that creates a flask object if store is None otherwise build a
+# fresh NoteStore
 def create_app(store: NoteStore | None = None) -> Flask:
     app = Flask(__name__)
-    # # Tell Flask which Python module contains the application, so it can locate resources like templates and static files.
+    # # Tell Flask which Python module contains the application, so it can
+    # locate resources like templates and static files.
     if store is None:
-        store = NoteStore()
+        if "DB_HOST" in os.environ:
+            store = SqlStore()
+        else:
+            store = NoteStore()
 
     @app.get("/healthz")
     def healthz():
@@ -27,7 +33,8 @@ def create_app(store: NoteStore | None = None) -> Flask:
         title = data.get("title")
         body = data.get("body", "")
         if not isinstance(title, str) or title.strip() == "":
-            return jsonify(error="title is required and must be non-empty"), 400
+            return jsonify(
+                error="title is required and must be non-empty"), 400
         if not isinstance(body, str):
             return jsonify(error="body must be a string"), 400
         note = store.add(title.strip(), body)
