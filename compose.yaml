@@ -8,6 +8,10 @@ services:
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_NAME: ${DB_NAME}
+    depends_on:
+      db:
+        condition:  service_healthy
+    restart: unless-stopped 
 
   db:
     image: mariadb:11
@@ -20,6 +24,13 @@ services:
       - db-data:/var/lib/mysql
       # schema folder, mounted read-only, the database will never edit the source of truth)
       - ./db/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
 
 # declaring db-data: — the named volume
 volumes:
