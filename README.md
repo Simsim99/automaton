@@ -49,6 +49,7 @@ curl -i localhost:8000/healthz
 * **Gunicorn 23.0.0, 2 prefork workers, logs on stdout/stderr** (12-factor, R5 seeded). Worker-kill drill: master respawned the dead worker — self-healing at process level; the same philosophy scales to containers in R4/R7. *(phase 4.2)*
 * **Rootless Docker on school PCs:** daemon per-PC, data in `/goinfre`. CPU limits not enforceable in rootless mode — documented, memory-only caps. *(phase 2)*
 * **non-root user:** notes (UID 1000), least privilege; .dockerignore gates the context — caches, tests, dev deps, and .env can never enter an image. *(phase 4.4)*
+* **PyMySQL:** (pure-Python, no native libs, keeps slim image slim) over the C mariadb connector; parameterized queries only; ping(reconnect=True) heals connections — armor for the chaos drill. Zero route and zero test changes in the swap. *(phase 5.4)*
 
 ## Evidence
 
@@ -59,3 +60,4 @@ curl -i localhost:8000/healthz
 | Test suite | 7 passed in ~0.1 s | 3.6 |
 | Red-proof (suite has teeth) | 1 surgical failure on sabotage | 3.7 |
 | Multi-stage image | 137 MB (−87% vs 1.04 GB) | 4.3
+down/up survival | 2 notes alive after full down/up | 5.5
