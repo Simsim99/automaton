@@ -60,3 +60,4 @@ curl -i localhost:8000/healthz
 | Test suite | 7 passed in ~0.1 s | 3.6 |
 | Red-proof (suite has teeth) | 1 surgical failure on sabotage | 3.7 |
 | Multi-stage image | 137 MB (−87% vs 1.04 GB) | 4.3
+down/up survival | 2 notes alive after full down/up | 5.5
